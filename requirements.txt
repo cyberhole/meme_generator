@@ -1,0 +1,6 @@
+## Requirements for Running
+* flask: [pip install flask -U]
+* requests: [pip install requests]
+* setuptools: [pip install -U setuptools]
+* python-docx: [pip install python-docx]
+* pandas: [pip install pandas]
