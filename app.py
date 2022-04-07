@@ -65,19 +65,27 @@ def meme_post():
     # get-the-data-received-in-a-flask-request
 
     temp_image = './_data/web_photos/web_photos.jpg'
-
     image_url = request.form['image_url']
-    img_content = requests.get(image_url, stream=True).content
-    with open(temp_image, 'wb') as f:
-        f.write(img_content)
+    if not image_url:
+        return render_template('meme_form.html')
 
-    image_url = request.get_data('image_url')
-    body = request.form['body']
-    author = request.form['author']
-    quote = QuoteModel(body, author)
+    try:
+        img_content = requests.get(image_url, stream=True).content
+        with open(temp_image, 'wb') as f:
+            f.write(img_content)
+        image_url = request.get_data('image_url')
+        body = request.form['body']
+        author = request.form['author']
+        quote = QuoteModel(body, author)
+        path = meme.make_meme(temp_image, quote.body, quote.author)
+        os.remove(temp_image)
+    except requests.exceptions.RequestException:
+        body = None
+        author = None
+        quote = QuoteModel(body, author)
+        error_image = './_data/web_photos/musk_error.jpg'
+        path = meme.make_meme(error_image, quote.body, quote.author)
 
-    path = meme.make_meme(temp_image, quote.body, quote.author)
-    os.remove(temp_image)
     return render_template('meme.html', path=path)
 
 

@@ -60,5 +60,8 @@ if __name__ == "__main__":
     else:
         path = args.path
 
-    _path = generate_meme(path, args.body, args.author)
-    print(f"meme created in {_path}")
+    try:
+        _path = generate_meme(path, args.body, args.author)
+        print(f"meme created in {_path}")
+    except AttributeError:
+        print("The path that you wrote had an issue")
